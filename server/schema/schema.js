@@ -3,37 +3,15 @@ const { projects, clients } = require('../simpleData.js');
 const {
   GraphQLObjectType,
   GraphQLID,
-  GraphQLString,
   GraphQLSchema,
   GraphQLList,
 } = require('graphql');
 
-// Client Type
-const ClientType = new GraphQLObjectType({
-  name: 'Client',
-  fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    email: { type: GraphQLString },
-    phone: { type: GraphQLString },
-  }),
-});
+const { ProjectType, ClientType } = require('./types.js');
 
-const ProjectType = new GraphQLObjectType({
-  name: 'Project',
-  fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    description: { type: GraphQLString },
-    status: { type: GraphQLString },
-    client: {
-      type: ClientType,
-      resolve(parent, args) {
-        return clients.find((client) => client.id === parent.clientId);
-      },
-    },
-  }),
-});
+const Project = require('../models/Project.js');
+const Client = require('../models/Client.js');
+
 
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
